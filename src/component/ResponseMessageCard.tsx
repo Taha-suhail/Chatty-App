@@ -6,11 +6,15 @@ import TypingEffect from './TypingEffect';
 interface ResponseMessageCardProp {
   message: string;
 }
-const ResponseMessageCard: FC<ResponseMessageCardProp> = ({ message }) => {
+const ResponseMessageCard: FC<ResponseMessageCardProp> = ({
+  message,
+  thinking,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.messageContainer}>
         {/* <Text style={styles.messageText}>{message}</Text>hel */}
+
         <TypingEffect text={message} style={styles.messageText} />
       </View>
     </View>

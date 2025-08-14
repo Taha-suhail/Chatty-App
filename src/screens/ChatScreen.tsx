@@ -22,6 +22,7 @@ interface Message {
   type: string;
 }
 const ChatScreen = () => {
+  const [thinking, setThinking] = useState<boolean>(false);
   const messageList: Message[] = [
     {
       message: 'Hello',
@@ -64,14 +65,13 @@ const ChatScreen = () => {
         },
       ];
     });
-
-    // setTimeout(() => {
     responseFromGemini(sentMsg);
-    // }, 500);
   };
   const responseFromGemini = async (msg: string) => {
+    setThinking(true);
     const response = await geminiResponse(msg);
     onGetResponse(response);
+    setThinking(false);
   };
   const onGetResponse = (response: string) => {
     setMessagesData(prevMsg => {
@@ -101,6 +101,9 @@ const ChatScreen = () => {
               <ResponseMessageCard message={item.message} />
             );
           }}
+          ListFooterComponent={
+            thinking ? <Text style={{ padding: 8 }}>Thinking...</Text> : null
+          }
           contentContainerStyle={{ paddingHorizontal: s(8) }}
           ListEmptyComponent={<EmptyChat />}
           onLayout={scrollToBottom}
