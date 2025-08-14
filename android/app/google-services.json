@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "679386350596",
+    "project_id": "chatty-45ea7",
+    "storage_bucket": "chatty-45ea7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679386350596:android:3bf9e202b3b42244e96151",
+        "android_client_info": {
+          "package_name": "com.taha.chatty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679386350596-9l861obj9n9mijt9qsv9lbt0jevve4e1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taha.chatty",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "679386350596-6g95e74tccrnulhv2c7mqu8nt9q5e053.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIAFjSO5tk5z0J9SfwHdb4h91d3NjqYEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679386350596-6g95e74tccrnulhv2c7mqu8nt9q5e053.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
