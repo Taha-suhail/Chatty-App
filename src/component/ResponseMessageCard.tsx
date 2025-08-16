@@ -21,8 +21,8 @@ const ResponseMessageCard: FC<ResponseMessageCardProp> = ({
           { backgroundColor: dark ? colors.black : '#e8e8e8' },
         ]}
       >
-        <Text>{message}</Text>
-        <Text style={styles.messageText}>-------------------</Text>
+        {/* <Text>{message}</Text>
+        <Text style={styles.messageText}>-------------------</Text> */}
         <TypingEffect text={message} style={styles.messageText} />
       </View>
     </View>

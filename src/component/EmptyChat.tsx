@@ -2,13 +2,29 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import AppIcon from '../../assets/icons/AppIcon';
 import { s, vs } from 'react-native-size-matters';
+import { useChat } from '../context/ChatContext';
+import { colors } from '../styles/colors';
 
 const EmptyChat = () => {
+  const { state, dispatch } = useChat();
+  const dark = state.isDark;
   return (
     <View style={styles.container}>
-      <AppIcon height={vs(100)} width={s(100)} />
-      <Text style={styles.title}>Hello</Text>
-      <Text style={styles.subtitle}>What can i help you with?</Text>
+      <AppIcon
+        height={vs(100)}
+        width={s(100)}
+        stroke={dark ? colors.white : colors.black}
+      />
+      <Text
+        style={[styles.title, { color: dark ? colors.white : colors.black }]}
+      >
+        Hello
+      </Text>
+      <Text
+        style={[styles.subtitle, { color: dark ? colors.white : colors.black }]}
+      >
+        What can i help you with?
+      </Text>
     </View>
   );
 };

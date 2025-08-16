@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
 import { useChat } from '../context/ChatContext';
 type DrawerNav = DrawerNavigationProp<any>;
 
@@ -26,9 +27,18 @@ const AppHeader = () => {
       <View style={styles.container}>
         <AppIcon height={s(30)} width={s(30)} stroke={'#fff'} />
       </View>
-      <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
+      {state.isDark ? (
+        <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
+          <Feather name="sun" size={s(28)} color={colors.white} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
+          <MaterialIcons name="dark-mode" size={s(28)} color={colors.white} />
+        </TouchableOpacity>
+      )}
+      {/* <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
         <MaterialIcons name="dark-mode" size={s(28)} color={colors.white} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

@@ -40,7 +40,7 @@ const initialState: ChatState = {
     },
   ],
   activeRoomId: defaultRoomId, // set the first room as active by default
-  isDark: false,
+  isDark: true,
 };
 function chatReducer(state: ChatState, action: ChatAction): ChatState {
   switch (action.type) {
