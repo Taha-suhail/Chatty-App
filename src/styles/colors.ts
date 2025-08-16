@@ -4,4 +4,6 @@ export const colors = {
   gray: '#f5f5f5',
   mediumGray: '#ccc',
   greyBack: '#e8e8e8',
+  ChatBlack: '#2b2b2b',
+  inputBlack: '#414141',
 };

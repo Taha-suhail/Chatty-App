@@ -1,6 +1,7 @@
 // import axios from 'axios';
 // import { HUGGING_FACE_KEY } from '../keys/key';
 
+import { Alert } from 'react-native';
 import { GEMINI_KEY } from '../keys/key';
 
 // const huggingFaceURL =
@@ -30,7 +31,9 @@ const genAI = new GoogleGenerativeAI(GEMINI_KEY);
 export const geminiResponse = async (msg: string) => {
   try {
     // Select the model
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash',
+    });
 
     // Send the prompt to Gemini
     const result = await model.generateContent(msg);
@@ -39,8 +42,8 @@ export const geminiResponse = async (msg: string) => {
     const text = result.response.text();
     console.log(text);
     return text;
-  } catch (error) {
-    console.error('Gemini API Error:', error);
-    return "Sorry, I couldn't process your request.";
+  } catch (error: unknown) {
+    console.error(JSON.stringify(error));
+    Alert.alert('Network Error');
   }
 };

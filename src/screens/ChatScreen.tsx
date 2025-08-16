@@ -1,109 +1,74 @@
-import {
-  Button,
-  FlatList,
-  FlatListProps,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { FlatList, KeyboardAvoidingView, Text, View } from 'react-native';
 import AppHeader from '../component/AppHeader';
 import SendMessageCard from '../component/SendMessageCard';
 import ResponseMessageCard from '../component/ResponseMessageCard';
 import { s } from 'react-native-size-matters';
-import { RECEIVED, SENT } from '../constants/Chat';
+import { SENT, RECEIVED, useChat } from '../context/ChatContext';
 import ChatInput from '../component/ChatInput';
 import EmptyChat from '../component/EmptyChat';
-import { geminiResponse, huggingFaceResponse } from '../api/http-request';
-interface Message {
-  id: number;
-  message: string;
-  type: string;
-}
+import { geminiResponse } from '../api/http-request';
+import { colors } from '../styles/colors';
+
 const ChatScreen = () => {
-  const [thinking, setThinking] = useState<boolean>(false);
-  const messageList: Message[] = [
-    {
-      message: 'Hello',
-      id: 1,
-      type: SENT,
-    },
-    {
-      message: 'Hello, How can i assist you today',
-      id: 2,
-      type: RECEIVED,
-    },
-    {
-      message: 'Tell me something about react native',
-      id: 3,
-      type: SENT,
-    },
-  ];
-  const [messagesData, setMessagesData] = useState<Message[]>([]);
+  const { state, dispatch } = useChat();
+  const activeRoom = state.rooms.find(r => r.id === state.activeRoomId);
   const [msgInput, setMsgInput] = useState('');
-  const flatlistRef = useRef<FlatList>(null);
-  // function to scroll to bottom of the screen
+  const [thinking, setThinking] = useState(false);
+  const flatlistRef = useRef(null);
+
   const scrollToBottom = () => {
-    if (flatlistRef.current && messagesData.length > 0) {
+    if (flatlistRef.current && activeRoom?.messages.length > 0) {
       flatlistRef.current.scrollToEnd({ animated: true });
     }
   };
-  useEffect(() => {
-    scrollToBottom();
-  }, []);
-  //function to send a message to Ai
+
   const onMessageSent = (sentMsg: string) => {
-    console.log('the User typed : ', msgInput);
-    setMessagesData(prevMsg => {
-      return [
-        ...prevMsg,
-        {
-          message: msgInput,
-          id: prevMsg.length + 1,
-          type: SENT,
-        },
-      ];
+    dispatch({
+      type: 'ADD_MESSAGE',
+      roomId: activeRoom.id,
+      message: { id: Date.now(), message: sentMsg, type: SENT },
     });
+
     responseFromGemini(sentMsg);
   };
-  const responseFromGemini = async (msg: string) => {
+
+  const responseFromGemini = async msg => {
     setThinking(true);
     const response = await geminiResponse(msg);
-    onGetResponse(response);
+    dispatch({
+      type: 'ADD_MESSAGE',
+      roomId: activeRoom.id,
+      message: { id: Date.now(), message: response, type: RECEIVED },
+    });
     setThinking(false);
   };
-  const onGetResponse = (response: string) => {
-    setMessagesData(prevMsg => {
-      return [
-        ...prevMsg,
-        {
-          message: response,
-          id: prevMsg.length + 1,
-          type: RECEIVED,
-        },
-      ];
-    });
-  };
+
+  if (!activeRoom) {
+    return <Text style={{ padding: 20 }}>No chat selected</Text>;
+  }
+
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: state.isDark ? colors.black : undefined,
+      }}
+    >
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <AppHeader />
-
         <FlatList
           ref={flatlistRef}
-          data={messagesData}
+          data={activeRoom.messages}
           keyExtractor={item => item.id.toString()}
-          renderItem={({ item }) => {
-            return item.type === SENT ? (
+          renderItem={({ item }) =>
+            item.type === SENT ? (
               <SendMessageCard message={item.message} />
             ) : (
               <ResponseMessageCard message={item.message} />
-            );
-          }}
-          ListFooterComponent={
-            thinking ? <Text style={{ padding: 8 }}>Thinking...</Text> : null
+            )
           }
+          ListFooterComponent={thinking ? <Text>Thinking...</Text> : null}
           contentContainerStyle={{ paddingHorizontal: s(8) }}
           ListEmptyComponent={<EmptyChat />}
           onLayout={scrollToBottom}
@@ -120,5 +85,3 @@ const ChatScreen = () => {
 };
 
 export default ChatScreen;
-
-const styles = StyleSheet.create({});

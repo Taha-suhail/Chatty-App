@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { s, vs } from 'react-native-size-matters';
 import { colors } from '../styles/colors';
 import TypingEffect from './TypingEffect';
+import { useChat } from '../context/ChatContext';
 interface ResponseMessageCardProp {
   message: string;
 }
@@ -10,11 +11,18 @@ const ResponseMessageCard: FC<ResponseMessageCardProp> = ({
   message,
   thinking,
 }) => {
+  const { state, dispatch } = useChat();
+  const dark = state.isDark;
   return (
     <View style={styles.container}>
-      <View style={styles.messageContainer}>
-        {/* <Text style={styles.messageText}>{message}</Text>hel */}
-
+      <View
+        style={[
+          styles.messageContainer,
+          { backgroundColor: dark ? colors.black : '#e8e8e8' },
+        ]}
+      >
+        <Text>{message}</Text>
+        <Text style={styles.messageText}>-------------------</Text>
         <TypingEffect text={message} style={styles.messageText} />
       </View>
     </View>

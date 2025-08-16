@@ -9,6 +9,7 @@ import React, { FC } from 'react';
 import { colors } from '../styles/colors';
 import { s, vs } from 'react-native-size-matters';
 import Feather from 'react-native-vector-icons/Feather';
+import { useChat } from '../context/ChatContext';
 interface ChatInputProps {
   messageValue: string;
   setMessage: (message: string) => void;
@@ -19,6 +20,8 @@ const ChatInput: FC<ChatInputProps> = ({
   setMessage,
   onMessageSent,
 }) => {
+  const { state, dispatch } = useChat();
+  const dark = state.isDark;
   const sendMessageHandler = () => {
     if (messageValue.trim().length > 0) {
       onMessageSent(messageValue);
@@ -26,16 +29,30 @@ const ChatInput: FC<ChatInputProps> = ({
     }
   };
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: dark ? colors.black : undefined },
+      ]}
+    >
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          { backgroundColor: dark ? colors.inputBlack : colors.gray },
+        ]}
         placeholder="Ask anything"
         multiline
         value={messageValue}
         onChangeText={setMessage}
-        placeholderTextColor={colors.black}
+        placeholderTextColor={dark ? colors.white : colors.black}
       />
-      <TouchableOpacity style={styles.sendBtn} onPress={sendMessageHandler}>
+      <TouchableOpacity
+        style={[
+          styles.sendBtn,
+          { backgroundColor: dark ? colors.inputBlack : colors.black },
+        ]}
+        onPress={sendMessageHandler}
+      >
         <Feather name="send" size={s(15)} color={colors.white} />
       </TouchableOpacity>
     </View>
@@ -47,7 +64,7 @@ export default ChatInput;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderTopWidth: 1,
+    borderTopWidth: 0.5,
     borderTopColor: colors.mediumGray,
     padding: s(10),
   },

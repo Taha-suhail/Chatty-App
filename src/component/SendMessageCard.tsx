@@ -2,13 +2,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
 import { colors } from '../styles/colors';
 import { s, vs } from 'react-native-size-matters';
+import { useChat } from '../context/ChatContext';
 interface isSendMessageCard {
   message: string;
 }
 const SendMessageCard: FC<isSendMessageCard> = ({ message }) => {
+  const { state, dispatch } = useChat();
+  const dark = state.isDark;
   return (
     <View style={styles.container}>
-      <View style={styles.messageContainer}>
+      <View
+        style={[
+          styles.messageContainer,
+          { backgroundColor: dark ? colors.ChatBlack : colors.black },
+        ]}
+      >
         <Text style={styles.textMessage}>{message}</Text>
       </View>
     </View>

@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import React, { useEffect } from 'react';
-import GoogleSignIn from './src/lessons/GoogleSignIn';
-import CameraGallery from './src/lessons/CameraGallery';
+
 import BootSplash from 'react-native-bootsplash';
-import AppIcon from './assets/icons/AppIcon';
 import ChatScreen from './src/screens/ChatScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import DrawerNavigation from './src/navigation/DrawerNavigation';
+import { ChatProvider } from './src/context/ChatContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
   useEffect(() => {
@@ -17,7 +19,20 @@ const App = () => {
       console.log('BootSplash has been hidden successfully');
     });
   }, []);
-  return <ChatScreen />;
+  // useEffect(() => {
+  //   const clearStorage = async () => {
+  //     await AsyncStorage.removeItem('chatState');
+  //     console.log('Chat state cleared');
+  //   };
+  //   clearStorage();
+  // }, []);
+  return (
+    <ChatProvider>
+      <NavigationContainer>
+        <DrawerNavigation />
+      </NavigationContainer>
+    </ChatProvider>
+  );
 };
 
 export default App;
