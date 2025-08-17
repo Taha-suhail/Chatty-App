@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { FC } from 'react';
 import { colors } from '../styles/colors';
 import { s, vs } from 'react-native-size-matters';
@@ -20,7 +14,7 @@ const ChatInput: FC<ChatInputProps> = ({
   setMessage,
   onMessageSent,
 }) => {
-  const { state, dispatch } = useChat();
+  const { state } = useChat();
   const dark = state.isDark;
   const sendMessageHandler = () => {
     if (messageValue.trim().length > 0) {
@@ -38,7 +32,10 @@ const ChatInput: FC<ChatInputProps> = ({
       <TextInput
         style={[
           styles.input,
-          { backgroundColor: dark ? colors.inputBlack : colors.gray },
+          {
+            backgroundColor: dark ? colors.inputBlack : colors.gray,
+            color: dark ? colors.white : colors.black,
+          },
         ]}
         placeholder="Ask anything"
         multiline

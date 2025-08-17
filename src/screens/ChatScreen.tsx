@@ -39,7 +39,12 @@ const ChatScreen = () => {
     dispatch({
       type: 'ADD_MESSAGE',
       roomId: activeRoom.id,
-      message: { id: Date.now(), message: response, type: RECEIVED },
+      message: {
+        id: Date.now(),
+        message: response,
+        type: RECEIVED,
+        isNew: true,
+      },
     });
     setThinking(false);
   };
@@ -65,10 +70,18 @@ const ChatScreen = () => {
             item.type === SENT ? (
               <SendMessageCard message={item.message} />
             ) : (
-              <ResponseMessageCard message={item.message} />
+              <ResponseMessageCard message={item.message} isNew={item.isNew} />
             )
           }
-          ListFooterComponent={thinking ? <Text>Thinking...</Text> : null}
+          ListFooterComponent={
+            thinking ? (
+              <Text
+                style={{ color: state.isDark ? colors.white : colors.black }}
+              >
+                Thinking...
+              </Text>
+            ) : null
+          }
           contentContainerStyle={{ paddingHorizontal: s(8) }}
           ListEmptyComponent={<EmptyChat />}
           onLayout={scrollToBottom}

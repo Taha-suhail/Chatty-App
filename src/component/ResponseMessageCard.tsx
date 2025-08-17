@@ -1,18 +1,31 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { s, vs } from 'react-native-size-matters';
 import { colors } from '../styles/colors';
 import TypingEffect from './TypingEffect';
 import { useChat } from '../context/ChatContext';
 interface ResponseMessageCardProp {
   message: string;
+  isNew: boolean;
 }
 const ResponseMessageCard: FC<ResponseMessageCardProp> = ({
   message,
-  thinking,
+  isNew,
 }) => {
-  const { state, dispatch } = useChat();
+  const { state } = useChat();
   const dark = state.isDark;
+  const [animated, setAnimated] = useState(isNew);
+
+  useEffect(() => {
+    if (isNew) {
+      const timer = setTimeout(
+        () => setAnimated(false),
+        1000 + message.length * 20,
+      );
+      return () => clearTimeout(timer);
+    }
+  }, [isNew, message]);
+
   return (
     <View style={styles.container}>
       <View
@@ -21,9 +34,19 @@ const ResponseMessageCard: FC<ResponseMessageCardProp> = ({
           { backgroundColor: dark ? colors.black : '#e8e8e8' },
         ]}
       >
-        {/* <Text>{message}</Text>
-        <Text style={styles.messageText}>-------------------</Text> */}
-        <TypingEffect text={message} style={styles.messageText} />
+        {animated ? (
+          <TypingEffect text={message} style={styles.messageText} />
+        ) : (
+          <Text
+            style={[
+              styles.messageText,
+              { color: dark ? colors.white : colors.black },
+            ]}
+          >
+            {message}
+          </Text>
+        )}
+        {/* <TypingEffect text={message} style={styles.messageText} /> */}
       </View>
     </View>
   );

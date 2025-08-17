@@ -8,6 +8,7 @@ type Message = {
   id: number;
   message: string;
   type: string;
+  isNew?: boolean;
 };
 
 type ChatRoom = {
@@ -64,14 +65,24 @@ function chatReducer(state: ChatState, action: ChatAction): ChatState {
         ...state,
         rooms: state.rooms.map(room =>
           room.id === action.roomId
-            ? { ...room, messages: [...room.messages, action.message] }
+            ? {
+                ...room,
+                messages: [
+                  ...room.messages,
+                  { ...action.message }, // 👈 force new flag
+                ],
+              }
             : room,
         ),
       };
     case 'LOAD_STATE':
       return {
-        ...initialState, // fallback values
+        ...initialState,
         ...action.payload,
+        rooms: action.payload.rooms.map(room => ({
+          ...room,
+          messages: room.messages.map(m => ({ ...m, isNew: false })), // 👈 reset old msgs
+        })),
       };
     case 'TOGGLE_THEME':
       return { ...state, isDark: !state.isDark };
