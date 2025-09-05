@@ -61,7 +61,7 @@ export default ChatInput;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderTopWidth: 0.5,
+    borderTopWidth: 0.3,
     borderTopColor: colors.mediumGray,
     padding: s(10),
   },

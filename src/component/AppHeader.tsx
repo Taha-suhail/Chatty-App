@@ -10,36 +10,36 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import { useChat } from '../context/ChatContext';
+import { SafeAreaView } from 'react-native';
 type DrawerNav = DrawerNavigationProp<any>;
 
 const AppHeader = () => {
   const { state, dispatch } = useChat();
   const navigation = useNavigation<DrawerNav>();
   return (
-    <View style={styles.mainContainer}>
-      <TouchableOpacity
-        onPress={() => navigation.openDrawer()}
-        style={styles.icon}
-      >
-        <Entypo name="menu" size={s(28)} color={colors.white} />
-      </TouchableOpacity>
-
+    <SafeAreaView style={styles.mainContainer}>
       <View style={styles.container}>
-        <AppIcon height={s(30)} width={s(30)} stroke={'#fff'} />
+        <TouchableOpacity
+          onPress={() => navigation.openDrawer()}
+          style={styles.icon}
+        >
+          <Entypo name="menu" size={s(28)} color={colors.white} />
+        </TouchableOpacity>
+
+        <View style={styles.container}>
+          <AppIcon height={s(30)} width={s(30)} stroke={'#fff'} />
+        </View>
+        {state.isDark ? (
+          <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
+            <Feather name="sun" size={s(28)} color={colors.white} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
+            <MaterialIcons name="dark-mode" size={s(28)} color={colors.white} />
+          </TouchableOpacity>
+        )}
       </View>
-      {state.isDark ? (
-        <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
-          <Feather name="sun" size={s(28)} color={colors.white} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
-          <MaterialIcons name="dark-mode" size={s(28)} color={colors.white} />
-        </TouchableOpacity>
-      )}
-      {/* <TouchableOpacity onPress={() => dispatch({ type: 'TOGGLE_THEME' })}>
-        <MaterialIcons name="dark-mode" size={s(28)} color={colors.white} />
-      </TouchableOpacity> */}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -47,21 +47,23 @@ export default AppHeader;
 
 const styles = StyleSheet.create({
   container: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     // paddingVertical: vs(12),
     // backgroundColor: colors.black,
     // paddingTop: IS_ANDROID ? undefined : vs(43),
+    marginTop: vs(8),
   },
   mainContainer: {
-    flexDirection: 'row',
-    paddingVertical: vs(16),
+    // flexDirection: 'row',
+    paddingVertical: vs(14),
     backgroundColor: colors.black,
     paddingTop: IS_ANDROID ? undefined : vs(43),
     // flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: s(12),
+    // alignItems: 'center',
+    // justifyContent: 'space-between',
+    paddingHorizontal: s(8),
     // gap: s(130),
   },
   icon: {},

@@ -32,7 +32,7 @@ function CustomDrawerContent(props) {
                   : isActive && !dark
                   ? '#ddd'
                   : 'transparent', // highlight active
-              borderBottomWidth: 1,
+              borderBottomWidth: 0.5,
               borderColor: '#fff',
             }}
             onPress={() => {

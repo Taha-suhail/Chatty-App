@@ -1,26 +1,5 @@
-// import axios from 'axios';
-// import { HUGGING_FACE_KEY } from '../keys/key';
-
 import { Alert } from 'react-native';
-import { GEMINI_KEY } from '../keys/key';
-
-// const huggingFaceURL =
-//   'https://api-inference.huggingface.co/models/distilbert/distilgpt2';
-
-// export const huggingFaceResponse = async (msg: string) => {
-//   const response = await axios.post(
-//     huggingFaceURL,
-//     {
-//       inputs: msg,
-//     },
-//     {
-//       headers: {
-//         Authorization: `Bearer ${HUGGING_FACE_KEY}`,
-//         'Content-Type': 'application/json',
-//       },
-//     },
-//   );
-// };
+import { GEMINI_KEY } from '@env';
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
